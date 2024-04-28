@@ -1,0 +1,441 @@
+create database test1
+
+create table emp{
+    emp_id int primary key,
+    last_name varchar(50) not null,
+    first_name varchar(50) not null,
+}
+
+
+//w3
+
+SELECT CustomerName, City FROM Customers;
+SELECT DISTINCT Country FROM Customers;
+SELECT COUNT(DISTINCT Country) FROM Customers;
+
+SELECT * FROM Customers WHERE Country='Mexico';
+
+SELECT * FROM Customers WHERE CustomerID > 80;
+
+SELECT * FROM Products ORDER BY Price;
+
+SELECT * FROM Products ORDER BY Price DESC;
+
+SELECT * FROM Products ORDER BY ProductName;
+
+SELECT * FROM Products ORDER BY ProductName DESC;
+
+SELECT * FROM Customers ORDER BY Country, CustomerName; //ordena por primera y si hay similares por segunda
+
+SELECT * FROM Customers ORDER BY Country ASC, CustomerName DESC;
+
+SELECT * FROM Customers WHERE Country = 'Spain' AND CustomerName LIKE 'G%';
+
+SELECT * FROM Customers WHERE Country = 'Germany' AND City = 'Berlin' AND PostalCode > 12000;
+
+SELECT * FROM Customers WHERE Country = 'Spain' AND (CustomerName LIKE 'G%' OR CustomerName LIKE 'R%');
+
+SELECT * FROM Customers WHERE Country = 'Spain' AND CustomerName LIKE 'G%' OR CustomerName LIKE 'R%';  //los de españa con g o los de R
+
+SELECT * FROM Customers WHERE Country = 'Germany' OR Country = 'Spain';
+
+SELECT * FROM Customers WHERE City = 'Berlin' OR CustomerName LIKE 'G%' OR Country = 'Norway';
+
+SELECT * FROM Customers WHERE NOT Country = 'Spain';
+
+SELECT * FROM Customers WHERE CustomerName NOT LIKE 'A%';
+
+SELECT * FROM Customers WHERE CustomerID NOT BETWEEN 10 AND 60;
+
+SELECT * FROM Customers WHERE City NOT IN ('Paris', 'London');
+
+SELECT * FROM Customers WHERE NOT CustomerID > 50;
+
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+INSERT INTO Customers (CustomerName, City, Country) VALUES ('Cardinal', 'Stavanger', 'Norway');
+
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway'), ('Greasy Burger', 'Per Olsen', 'Gateveien 15', 'Sandnes', '4306', 'Norway'), ('Tasty Tee', 'Finn Egan', 'Streetroad 19B', 'Liverpool', 'L1 0AA', 'UK');
+
+SELECT CustomerName, ContactName, Address FROM Customers WHERE Address IS NULL;
+
+SELECT CustomerName, ContactName, Address FROM Customers WHERE Address IS NOT NULL;
+
+UPDATE Customers SET ContactName = 'Alfred Schmidt', City= 'Frankfurt' WHERE CustomerID = 1;
+
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+
+DROP TABLE Customers;
+
+SELECT TOP 3 * FROM Customers; //solo los 3 primeros
+
+SELECT * FROM Customers LIMIT 3;
+
+SELECT MIN(Price) FROM Products;
+
+SELECT MAX(Price) FROM Products;
+
+SELECT MIN(Price) AS SmallestPrice FROM Products;
+
+SELECT MIN(Price) AS SmallestPrice, CategoryID FROM Products GROUP BY CategoryID;
+
+SELECT COUNT(*) FROM Products;
+
+SELECT COUNT(ProductName) FROM Products;
+
+SELECT COUNT(ProductID) FROM Products WHERE Price > 20;
+
+SELECT COUNT(DISTINCT Price) FROM Products;
+
+SELECT COUNT(*) AS [Number of records] FROM Products;
+
+SELECT COUNT(*) AS [Number of records], CategoryID FROM Products GROUP BY CategoryID;
+
+SELECT SUM(Quantity) FROM OrderDetails;
+
+SELECT SUM(Quantity) FROM OrderDetails WHERE ProductId = 11;
+
+SELECT SUM(Quantity) AS total FROM OrderDetails;
+
+SELECT OrderID, SUM(Quantity) AS [Total Quantity] FROM OrderDetails GROUP BY OrderID;
+
+SELECT SUM(Quantity * 10) FROM OrderDetails;
+
+SELECT SUM(Price * Quantity) FROM OrderDetails LEFT JOIN Products ON OrderDetails.ProductID = Products.ProductID;
+
+SELECT AVG(Price) FROM Products;
+
+SELECT AVG(Price) FROM Products WHERE CategoryID = 1;
+
+SELECT * FROM Products WHERE price > (SELECT AVG(price) FROM Products);
+
+SELECT AVG(Price) AS AveragePrice, CategoryID FROM Products GROUP BY CategoryID;
+
+SELECT * FROM Customers WHERE CustomerName LIKE 'a%'; //empiezan por a
+
+SELECT * FROM Customers WHERE city LIKE 'L_nd__'; //landio por ejemplo
+
+SELECT * FROM Customers WHERE city LIKE '%L%'; //contiene L
+
+SELECT * FROM Customers WHERE CustomerName LIKE 'La%'; //empieza por landio
+
+SELECT * FROM Customers WHERE CustomerName LIKE 'a%' OR CustomerName LIKE 'b%'; //empiezan por a o B
+
+SELECT * FROM Customers WHERE CustomerName LIKE '%a'; //terminan en A
+
+SELECT * FROM Customers WHERE CustomerName LIKE 'b%s'; //empiezan por b y terminan por s
+
+SELECT * FROM Customers WHERE CustomerName LIKE '%or%'; //contienen or
+
+SELECT * FROM Customers WHERE CustomerName LIKE 'a__%'; //empieza por a y al menos 3 caracs
+
+SELECT * FROM Customers WHERE CustomerName LIKE '_r%';  //r en la segunda posicion
+
+SELECT * FROM Customers WHERE Country LIKE 'Spain'; //directos españa
+
+SELECT * FROM Customers WHERE CustomerName LIKE '[bsp]%'; //empiezan por b o s o p
+
+SELECT * FROM Customers WHERE CustomerName LIKE '[a-f]%'; //empiezan po a-f
+
+SELECT * FROM Customers WHERE Country IN ('Germany', 'France', 'UK');
+
+SELECT * FROM Customers WHERE Country NOT IN ('Germany', 'France', 'UK');
+
+SELECT * FROM Customers WHERE CustomerID IN (SELECT CustomerID FROM Orders); //clientes que tienen algun pedido
+
+SELECT * FROM Customers WHERE CustomerID NOT IN (SELECT CustomerID FROM Orders); //clientes sin pedidos
+
+SELECT * FROM Products WHERE Price BETWEEN 10 AND 20;
+
+SELECT * FROM Products WHERE Price NOT BETWEEN 10 AND 20;
+
+SELECT * FROM Products WHERE Price BETWEEN 10 AND 20 AND CategoryID IN (1,2,3);
+
+SELECT * FROM Orders WHERE OrderDate BETWEEN '1996-07-01' AND '1996-07-31';
+
+SELECT CustomerID AS ID, CustomerName AS Customer FROM Customers;
+
+SELECT ProductName AS [My Great Products] FROM Products;
+
+SELECT o.OrderID, o.OrderDate, c.CustomerName FROM Customers AS c, Orders AS o WHERE c.CustomerName='Around the Horn' AND c.CustomerID=o.CustomerID;
+
+SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate FROM Orders INNER JOIN Customers ON Orders.CustomerID=Customers.CustomerID;
+
+(INNER) JOIN: Returns records that have matching values in both tables
+LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+
+SELECT ProductID, ProductName, CategoryName FROM Products INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+
+SELECT Products.ProductID, Products.ProductName, Categories.CategoryName FROM Products INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
+
+SELECT Products.ProductID, Products.ProductName, Categories.CategoryName FROM Products JOIN Categories ON Products.CategoryID = Categories.CategoryID; //join and inner join lo mismo
+
+SELECT Orders.OrderID, Customers.CustomerName, Shippers.ShipperName FROM ((Orders INNER JOIN Customers ON Orders.CustomerID = Customers.CustomerID) INNER JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID);
+
+SELECT Customers.CustomerName, Orders.OrderID FROM Customers LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID ORDER BY Customers.CustomerName;
+
+SELECT Orders.OrderID, Employees.LastName, Employees.FirstName FROM Orders RIGHT JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID ORDER BY Orders.OrderID;
+
+SELECT Customers.CustomerName, Orders.OrderID FROM Customers FULL OUTER JOIN Orders ON Customers.CustomerID=Orders.CustomerID ORDER BY Customers.CustomerName;
+
+SELECT A.CustomerName AS CustomerName1, B.CustomerName AS CustomerName2, A.City FROM Customers A, Customers B WHERE A.CustomerID <> B.CustomerID AND A.City = B.City ORDER BY A.City; //la tabla es joined consigo misma
+
+SELECT City FROM Customers UNION SELECT City FROM Suppliers ORDER BY City;  //combina los resultados de dos SELECT, en este caso solo distintos
+
+SELECT City FROM Customers UNION ALL SELECT City FROM Suppliers ORDER BY City; //en este caso tambien repetidos
+
+SELECT City, Country FROM Customers WHERE Country='Germany' UNION SELECT City, Country FROM Suppliers WHERE Country='Germany' ORDER BY City;
+
+SELECT City, Country FROM Customers WHERE Country='Germany' UNION ALL SELECT City, Country FROM Suppliers WHERE Country='Germany' ORDER BY City;
+
+SELECT 'Customer' AS Type, ContactName, City, Country FROM Customers UNION SELECT 'Supplier', ContactName, City, Country FROM Suppliers;
+
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country ORDER BY COUNT(CustomerID) DESC;  //cuenta el numero de clientes por pais
+
+SELECT Shippers.ShipperName, COUNT(Orders.OrderID) AS NumberOfOrders FROM Orders LEFT JOIN Shippers ON Orders.ShipperID = Shippers.ShipperID GROUP BY ShipperName; //numero de pedidos por cada Shipper
+
+//having se añadido porque where no se puede utilizar en aggregates
+
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country HAVING COUNT(CustomerID) > 5; //muestra paises con al menos 5 clientes
+
+SELECT COUNT(CustomerID), Country FROM Customers GROUP BY Country HAVING COUNT(CustomerID) > 5 ORDER BY COUNT(CustomerID) DESC;
+
+SELECT Employees.LastName, COUNT(Orders.OrderID) AS NumberOfOrders FROM (Orders INNER JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID) GROUP BY LastName HAVING COUNT(Orders.OrderID) > 10; //empleados con mas de 10 pedidos
+
+SELECT Employees.LastName, COUNT(Orders.OrderID) AS NumberOfOrders FROM Orders INNER JOIN Employees ON Orders.EmployeeID = Employees.EmployeeID WHERE LastName = 'Davolio' OR LastName = 'Fuller' GROUP BY LastName HAVING COUNT(Orders.OrderID) > 25; //estos empleados tienen mas de 25 pedidos
+
+SELECT SupplierName FROM Suppliers WHERE EXISTS (SELECT ProductName FROM Products WHERE Products.SupplierID = Suppliers.supplierID AND Price < 20); //muestra vendedores con un precio de un producto menor a 20
+
+SELECT SupplierName FROM Suppliers WHERE EXISTS (SELECT ProductName FROM Products WHERE Products.SupplierID = Suppliers.supplierID AND Price = 22); //igual a 22
+
+SELECT ProductName FROM Products WHERE ProductID = ANY (SELECT ProductID FROM OrderDetails WHERE Quantity = 10);  //devuelve productos si en orders tienen 10
+
+SELECT ProductName FROM Products WHERE ProductID = ALL (SELECT ProductID FROM OrderDetails WHERE Quantity = 10);  //productos que todos los orders tengan 10
+
+SELECT * INTO CustomersBackup2017 FROM Customers; //copia lo de una tabla en otra
+
+SELECT * INTO CustomersBackup2017 IN 'Backup.mdb' FROM Customers;  //en otra base de datos
+
+SELECT Customers.CustomerName, Orders.OrderID INTO CustomersOrderBackup2017 FROM Customers LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID;
+
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country) SELECT SupplierName, ContactName, Address, City, PostalCode, Country FROM Suppliers;  //copia los datos de una tabla y los inserta en otra
+
+INSERT INTO Customers (CustomerName, City, Country) SELECT SupplierName, City, Country FROM Suppliers WHERE Country='Germany';  //copia solo los alemanes
+
+SELECT OrderID, Quantity, CASE WHEN Quantity > 30 THEN 'The quantity is greater than 30' WHEN Quantity = 30 THEN 'The quantity is 30' ELSE 'The quantity is under 30' END AS QuantityText FROM OrderDetails;
+
+SELECT CustomerName, City, Country FROM Customers ORDER BY (CASE WHEN City IS NULL THEN Country ELSE City END);
+
+SELECT ProductName, UnitPrice * (UnitsInStock + IFNULL(UnitsOnOrder, 0)) FROM Products; // si es nulo pon 0
+
+SELECT ProductName, UnitPrice * (UnitsInStock + COALESCE(UnitsOnOrder, 0)) FROM Products;
+
+CREATE PROCEDURE SelectAllCustomers AS SELECT * FROM Customers GO;  //se puede guardar
+
+EXEC SelectAllCustomers;
+
+CREATE PROCEDURE SelectAllCustomers @City nvarchar(30) AS SELECT * FROM Customers WHERE City = @City GO;
+
+EXEC SelectAllCustomers @City = 'London'; //con un parametro
+
+CREATE PROCEDURE SelectAllCustomers @City nvarchar(30), @PostalCode nvarchar(10) AS SELECT * FROM Customers WHERE City = @City AND PostalCode = @PostalCode GO;
+
+EXEC SelectAllCustomers @City = 'London', @PostalCode = 'WA1 1DP';
+
+SELECT * FROM Customers -- WHERE City='Berlin';
+
+/*Select all the columns of all the records in the Customers table:*/
+SELECT * FROM Customers;
+
+CREATE DATABASE testDB;
+
+DROP DATABASE testDB;
+
+SHOW DATABASES;
+
+CREATE TABLE Persons (
+    PersonID int,
+    LastName varchar(255),
+    FirstName varchar(255),
+    Address varchar(255),
+    City varchar(255)
+);
+
+CREATE TABLE TestTable AS SELECT customername, contactname FROM customers;  //crear tabla desde otra
+
+DROP TABLE Shippers;
+
+TRUNCATE TABLE table_name; //elimina datos pero no tabla
+
+ALTER TABLE Customers ADD Email varchar(255);  //añade columna
+
+ALTER TABLE Customers DROP COLUMN Email;
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255) NOT NULL,
+    Age int
+);
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL UNIQUE,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int
+);
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (ID)
+);
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CONSTRAINT PK_Person PRIMARY KEY (ID,LastName)
+);
+
+ALTER TABLE Persons ADD PRIMARY KEY (ID);
+
+ALTER TABLE Persons DROP PRIMARY KEY;
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    FOREIGN KEY (PersonID) REFERENCES Persons(PersonID)
+);
+
+CREATE TABLE Orders (
+    OrderID int NOT NULL,
+    OrderNumber int NOT NULL,
+    PersonID int,
+    PRIMARY KEY (OrderID),
+    CONSTRAINT FK_PersonOrder FOREIGN KEY (PersonID)
+    REFERENCES Persons(PersonID)
+);
+
+ALTER TABLE Orders ADD FOREIGN KEY (PersonID) REFERENCES Persons(PersonID);
+
+ALTER TABLE Orders DROP FOREIGN KEY FK_PersonOrder;
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    CHECK (Age>=18)
+);
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255),
+    CONSTRAINT CHK_Person CHECK (Age>=18 AND City='Sandnes')
+);
+
+
+ALTER TABLE Persons ADD CHECK (Age>=18);
+
+
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    City varchar(255) DEFAULT 'Sandnes'
+);
+
+
+ALTER TABLE Persons ALTER City SET DEFAULT 'Sandnes';
+
+ALTER TABLE Persons ALTER City DROP DEFAULT;
+
+//los indices se utilizan para recuperar los datos mas rapidamente
+//actualizar tablas con indices tarda mas. Mejor solo para busqueda
+
+CREATE INDEX idx_pname ON Persons (LastName, FirstName);
+
+ALTER TABLE table_name DROP INDEX index_name;
+
+CREATE TABLE Persons (
+    Personid int NOT NULL AUTO_INCREMENT,
+    LastName varchar(255) NOT NULL,
+    FirstName varchar(255),
+    Age int,
+    PRIMARY KEY (Personid)
+);
+
+
+
+//una view es una tabla virtual con el resultado de una consulta
+CREATE VIEW [Brazil Customers] AS
+SELECT CustomerName, ContactName
+FROM Customers
+WHERE Country = 'Brazil';
+
+SELECT * FROM [Brazil Customers];
+
+
+CREATE VIEW [Products Above Average Price] AS
+SELECT ProductName, Price
+FROM Products
+WHERE Price > (SELECT AVG(Price) FROM Products);
+
+SELECT * FROM [Products Above Average Price];
+
+
+CREATE OR REPLACE VIEW [Brazil Customers] AS
+SELECT CustomerName, ContactName, City
+FROM Customers
+WHERE Country = 'Brazil';
+
+DROP VIEW [Brazil Customers];
+
+//varchar, int y date
+
+
+
+//with crea un subloque de una query que se puede referenciar en la consulta principal
+//vista temporal que no se almacena, util cuando no es adecuada una tabla derivada
+WITH cte_sales
+AS
+(SELECT
+    EmployeeID,
+    COUNT(OrderID) as Orders,
+    ShipperID
+FROM Orders
+GROUP BY EmployeeID, ShipperID),
+ 
+
+shipper_cte
+AS
+(SELECT *
+FROM cte_sales
+WHERE ShipperID=2 or ShipperID=3)
+ 
+
+SELECT
+    ShipperID, AVG(Orders) average_order_per_employee
+FROM
+shipper_cte
+GROUP BY ShipperID;
+
+
+
+
